@@ -19,24 +19,24 @@ const find = (search: object, array: object[], key?: string): object[] | [] => {
   return filteredArray;
 };
 
-const testArray = [
-  { color: "black", size: 2, big: false },
-  { color: "pink", size: 3, big: false },
-  { color: "black", size: 3, big: false },
-  { color: "pink", size: 14, big: true },
-];
+// const testArray = [
+//   { color: "black", size: 2, big: false },
+//   { color: "pink", size: 3, big: false },
+//   { color: "black", size: 3, big: false },
+//   { color: "pink", size: 14, big: true },
+// ];
 
-const size = 3;
-const color = "black";
-const big = true;
+// const size = 3;
+// const color = "black";
+// const big = true;
 
-const color2 = "pink";
-const filteredPink = find({ color2 }, testArray, "color");
-console.log(filteredPink);
+// const color2 = "pink";
+// const filteredPink = find({ color2 }, testArray, "color");
+// console.log(filteredPink);
 
-const filteredSize = find({ size }, testArray);
-const filteredColor = find({ color }, testArray);
-const filteredBig = find({ big }, testArray);
-console.log({ filteredSize, filteredColor, filteredBig });
+// const filteredSize = find({ size }, testArray);
+// const filteredColor = find({ color }, testArray);
+// const filteredBig = find({ big }, testArray);
+// console.log({ filteredSize, filteredColor, filteredBig });
 
 export default find;

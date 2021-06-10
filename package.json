@@ -1,6 +1,6 @@
 {
   "name": "object-array-filter",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Filters an array of objects by matching a field's value in each object to a search term. Returns filtered array",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",

@@ -2,33 +2,62 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 /**Returns the name of a variable as a string */
 const variableName = (variableAsObj) => Object.keys(variableAsObj)[0];
-/**Filters an array of objects by matching a field's value in each object to a search term. Returns filtered array */
-const find = (search, array, key) => {
-    let objKey;
-    key ? (objKey = key) : (objKey = variableName(search));
-    const searchValue = Object.values(search)[0];
-    const searchRegex = typeof searchValue === "string"
-        ? new RegExp(searchValue, "ig")
-        : searchValue;
-    const filteredArray = typeof searchValue === "string"
-        ? array.filter((item) => item[objKey].match(searchRegex))
-        : array.filter((item) => item[objKey] == searchValue);
-    return filteredArray;
+/**Filters an array of objects by matching a field's value in each object to a search term.
+ * Returns filtered array */
+const find = (search, array, key, comparison) => {
+    return new Promise((resolve, reject) => {
+        let objKey;
+        key ? (objKey = key) : (objKey = variableName(search));
+        let operator;
+        comparison ? (operator = comparison) : (operator = "eq");
+        const searchValue = Object.values(search)[0];
+        const searchIsString = typeof searchValue === "string";
+        const searchIsBoolean = typeof searchValue === "boolean";
+        const searchIsNumber = typeof searchValue === "number";
+        if ((searchIsString || searchIsBoolean) &&
+            operator !== "eq" &&
+            operator !== "ne") {
+            return reject(new Error("Cannot perform a mathematical comparison with a string or boolean."));
+        }
+        let searchRegex;
+        if (searchIsString)
+            searchRegex = new RegExp(searchValue, "ig");
+        let filteredArray;
+        if (searchIsString) {
+            operator === "eq"
+                ? (filteredArray = array.filter((item) => item[objKey].match(searchRegex)))
+                : (filteredArray = array.filter((item) => !item[objKey].match(searchRegex)));
+        }
+        if (searchIsBoolean) {
+            operator === "eq"
+                ? (filteredArray = array.filter((item) => item[objKey] == searchValue))
+                : (filteredArray = array.filter((item) => item[objKey] != searchValue));
+        }
+        if (searchIsNumber) {
+            switch (operator) {
+                case "eq":
+                    filteredArray = array.filter((item) => item[objKey] == searchValue);
+                    break;
+                case "ne":
+                    filteredArray = array.filter((item) => item[objKey] != searchValue);
+                    break;
+                case "lt":
+                    filteredArray = array.filter((item) => item[objKey] < searchValue);
+                    break;
+                case "gt":
+                    filteredArray = array.filter((item) => item[objKey] > searchValue);
+                    break;
+                case "gte":
+                    filteredArray = array.filter((item) => item[objKey] >= searchValue);
+                    break;
+                case "lte":
+                    filteredArray = array.filter((item) => item[objKey] <= searchValue);
+                    break;
+                default:
+                    break;
+            }
+        }
+        resolve(filteredArray);
+    });
 };
-// const testArray = [
-//   { color: "black", size: 2, big: false },
-//   { color: "pink", size: 3, big: false },
-//   { color: "black", size: 3, big: false },
-//   { color: "pink", size: 14, big: true },
-// ];
-// const size = 3;
-// const color = "black";
-// const big = true;
-// const color2 = "pink";
-// const filteredPink = find({ color2 }, testArray, "color");
-// console.log(filteredPink);
-// const filteredSize = find({ size }, testArray);
-// const filteredColor = find({ color }, testArray);
-// const filteredBig = find({ big }, testArray);
-// console.log({ filteredSize, filteredColor, filteredBig });
 exports.default = find;

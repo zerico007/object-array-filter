@@ -60,8 +60,10 @@ testing();
   filteredBig: [ { color: 'pink', size: 14, big: true } ]
 } */
 
-//NB: Variable name should match the name of the field in the object. If the variable name does not match the field name, the following syntax must be used
-
+/* 
+NB: Variable name should match the name of the field in the object. 
+If the variable name does not match the field name, the following syntax must be used
+ */
 const color2 = 'pink'
 find({ color2 }, testArray, "color")
   .then((filtered) => console.log(filtered))

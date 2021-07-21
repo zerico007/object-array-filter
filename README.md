@@ -36,9 +36,9 @@ const big = true;
 
 const testing = async () => {
   try {
-    const filteredSize = await find({ size }, testArray);
-    const filteredColor = await find({ color }, testArray);
-    const filteredNotBig = await find({ big }, testArray);
+    const filteredSize = await find.default({ size }, testArray);
+    const filteredColor = await find.default({ color }, testArray);
+    const filteredNotBig = await find.default({ big }, testArray);
     console.log({ filteredSize, filteredColor, filteredBig });
   } catch (error) {
     console.log(error);
@@ -65,7 +65,7 @@ NB: Variable name should match the name of the field in the object.
 If the variable name does not match the field name, the following syntax must be used
  */
 const color2 = 'pink'
-find({ color2 }, testArray, "color")
+find.default({ color2 }, testArray, "color")
   .then((filtered) => console.log(filtered))
   .catch((error) => console.log(error));
 
@@ -74,10 +74,10 @@ find({ color2 }, testArray, "color")
 //NB: The default operator is 'eq'. If you wish to use another operator, below are some examples.
 const testingOperators = async () => {
   try {
-    const filteredLessThanOrEqual3 = await find({ size }, testArray, "size", "lte");
-    const filteredGreaterThan3 = await find({ size }, testArray, "size", "gt");
-    const filteredNotBlack = await find({ color }, testArray, "color", "ne");
-    const filteredNotBig = await find({ big }, testArray, "big", "ne");
+    const filteredLessThanOrEqual3 = await find.default({ size }, testArray, "size", "lte");
+    const filteredGreaterThan3 = await find.default({ size }, testArray, "size", "gt");
+    const filteredNotBlack = await find.default({ color }, testArray, "color", "ne");
+    const filteredNotBig = await find.default({ big }, testArray, "big", "ne");
     console.log({ filteredLessThanOrEqual3, filteredGreaterThan3, filteredNotBlack, filteredNotBig });
   } catch (error) {
     console.log(error);
@@ -105,3 +105,56 @@ testingOperators();
 } */
 
 ```
+
+# TypeScript Usage
+
+```javascript
+import find from 'object-array-filter';
+
+/**
+ * @param search object
+ * @param array an array of object with the same properties
+ * @param key <optional> object key to perform comparison.
+ * @param comparison <optional> comparison operator to use.
+ * @returns {Promise<object[] | []>} Returns filtered array
+ */
+
+
+
+const testArray = [
+  { color: "black", size: 2, big: false },
+  { color: "pink", size: 3, big: false },
+  { color: "black", size: 3, big: false },
+  { color: "pink", size: 14, big: true}
+];
+
+const size = 3;
+const color = 'black';
+const big = true;
+
+const testing = async () => {
+  try {
+    const filteredSize = await find({ size }, testArray);
+    const filteredColor = await find({ color }, testArray);
+    const filteredNotBig = await find({ big }, testArray);
+    console.log({ filteredSize, filteredColor, filteredBig });
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+//Run function
+testing();
+
+/* expected output: {
+  filteredSize: [
+    { color: 'pink', size: 3, big: false },
+    { color: 'black', size: 3, big: false }
+  ],
+  filteredColor: [
+    { color: 'black', size: 2, big: false },
+    { color: 'black', size: 3, big: false }
+  ],
+  filteredBig: [ { color: 'pink', size: 14, big: true } ]
+} */
+
